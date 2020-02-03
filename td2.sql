@@ -30,3 +30,5 @@ join Locations L on C.idClient=L.idClient
 join Bungalows B on L.idBungalow=B.idBungalow
 join Campings Ca  on Ca.idCamping=B.idCamping
 where nomCamping='Les Flots Bleus' and dateDebut<='14/07/2017' and dateFin>='14/07/2017';
+
+R16
