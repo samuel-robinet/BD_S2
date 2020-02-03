@@ -78,14 +78,30 @@ join Campings C on E.idCamping=C.idCamping
 where nomCamping='Les Flots Bleus'
 
 R20
-select count(Ca.idCamping)
+select count(idLocation)
+join Locations 
+join Clients C on L.idClient=C.idClient
+where nomClient='Zeblouse'
+
+
+
+select count(Distinct Ca.idCamping)
 from Campings Ca
 join Bungalows B on Ca.idCamping=B.idCamping
 join Locations L on B.idBungalow=L.idBungalow
 join Clients C on L.idClient=C.idClient
 where nomClient='Zeblouse'
 
-select count(idLocation)
-join Locations 
-join Clients C on L.idClient=C.idClient
-where nomClient='Zeblouse'
+R21
+select nomBungalow
+from Bungalows
+where superficieBungalow in (select max(superficieBungalow)
+from Bungalows)
+
+R22
+select nomEmploye, prenomEmploye
+from Employes 
+where salaireEmploye = (select min(salaireEmploye) 
+	from Employes E 
+	join Campings C on E.idCamping=C.idCamping 
+	where nomCamping='Les Flots Bleus')
