@@ -100,8 +100,33 @@ from Bungalows)
 
 R22
 select nomEmploye, prenomEmploye
-from Employes 
-where salaireEmploye = (select min(salaireEmploye) 
+from Employes E 
+	join Campings C on E.idCamping=C.idCamping 
+where salaireEmploye in (select min(salaireEmploye) 
 	from Employes E 
 	join Campings C on E.idCamping=C.idCamping 
-	where nomCamping='Les Flots Bleus')
+	where nomCamping='Les Flots Bleus') and nomCamping='Les Flots Bleus';
+
+R23
+select nomBungalow
+from Bungalows
+where idBungalow not in (select B.idBungalow from Bungalows B 
+	join Proposer P on P.idBungalow=B.idBungalow
+	join Services S on S.idservice=p.idservice)
+
+R24
+select nomEmploye, prenomEmploye
+from Employes
+where idEmploye in(select idEmploye
+from Employes 
+minus
+Select idEmployeChef
+from Employes)
+
+R25
+Select nomBungalow
+from Bungalows B
+join Proposer P on B.idBungalow=P.idBungalow
+join Services S on P.idservice=S.idservice
+where idservice not in(select idService 
+	='Climatisation'
