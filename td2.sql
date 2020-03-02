@@ -124,6 +124,7 @@ Select idEmployeChef
 from Employes)
 
 R25
+/* marche pas */
 Select Distinct nomBungalow
 from Bungalows 
 where idBungalow not in(select idBungalow
@@ -236,6 +237,25 @@ from Employes E
 where not exists (select*
 							from Campings C
 							where E.idCamping=C.idCamping)
+R42
+select count(B.idBungalow) as "NB Bungalows"
+from Bungalows B
+join Locations L on B.idBungalow=L.idBungalow
+join Clients C on L.idClient=C.idClient
+where nomClient='Zeblouse' and prenomClient='Agathe'
+
+R43
+/* Marche pas */
+select nomClient, prenomClient
+from Clients 
+minus
+select nomClient, prenomClient
+from Clients C 
+join Locations L on L.idClient=C.idClient
+join Bungalows B on L.idBungalow=B.idBungalow
+join Campings CA on B.idCamping=CA.idCamping
+where nomCamping='Les Flots Bleus'
+
 
 TD4
 
@@ -320,6 +340,23 @@ select nomBungalow, nomCamping
 from Bungalows B
 join Campings C on  b.idCamping=C.idCamping
 join Locations L on B.idBungalow=L.idBungalow
-where dateDebut<='31/06/2017' and dateFin>='01/06/2017'
+where dateDebut<='30/06/2017' and dateFin>='01/06/2017'
 group by B.idBungalow, nomBungalow, nomCamping
 having count(idLocation)>2
+
+R59
+select nomBungalow
+from Bungalows B
+join Proposer P on B.idBungalow=P.idBungalow
+group by B.idBungalow, nomBungalow
+having count(p.idservice)= (select max(count(idService))
+							from Bungalows B
+							join Proposer P on B.idBungalow=P.idBungalow
+							group by B.idBungaloW)
+select nomBungalow
+from Bungalows B
+join Proposer P on B.idBungalow=P.idBungalow
+group by B.idBungalow, nomBungalow
+having count(p.idservice)= (select max(count(idService))
+							from Proposer 
+							group by idBungaloW)
