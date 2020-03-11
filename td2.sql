@@ -360,3 +360,18 @@ group by B.idBungalow, nomBungalow
 having count(p.idservice)= (select max(count(idService))
 							from Proposer 
 							group by idBungaloW)
+
+
+R70
+SELECT nomBungalow, B.idBungalow FROM Bungalows B
+JOIN Proposer P ON B.idBungalow=P.idBungalow
+GROUP BY nomBungalow, B.idBungalow
+HAVING COUNT(*) = (SELECT COUNT(*) FROM Services) ;
+
+
+SELECT   Distinct P.idBungalow
+from Proposer P
+WHERE NOT EXISTS ​
+ 	(SELECT A.idservice FROM Services A 
+ MINUS ​
+	SELECT V.idservice  FROM Proposer V WHERE V.idBungalow =  P.idBungalow)​
