@@ -369,9 +369,24 @@ GROUP BY nomBungalow, B.idBungalow
 HAVING COUNT(*) = (SELECT COUNT(*) FROM Services) ;
 
 
+select nomBungalow from Bungalows B
+where B.idBungalow=(
 SELECT   Distinct P.idBungalow
 from Proposer P
 WHERE NOT EXISTS ​
  	(SELECT A.idservice FROM Services A 
  MINUS ​
-	SELECT V.idservice  FROM Proposer V WHERE V.idBungalow =  P.idBungalow)​
+	SELECT V.idservice  FROM Proposer V WHERE V.idBungalow =  P.idBungalow)​)
+
+R71
+
+select nomBungalow 
+from Bungalows B
+where B.nomBungalow=(select)
+
+
+
+SELECT nomBungalow FROM Bungalows B
+JOIN Proposer P ON B.idBungalow=P.idBungalow
+GROUP BY nomBungalow
+HAVING COUNT(*) = (SELECT COUNT(*) FROM Services where categorieService='Luxe') ;
