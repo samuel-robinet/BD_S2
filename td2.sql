@@ -368,25 +368,71 @@ JOIN Proposer P ON B.idBungalow=P.idBungalow
 GROUP BY nomBungalow, B.idBungalow
 HAVING COUNT(*) = (SELECT COUNT(*) FROM Services) ;
 
-
-select nomBungalow from Bungalows B
+/*
+select nomBungalow 
+from Bungalows B
 where B.idBungalow=(
-SELECT   Distinct P.idBungalow
-from Proposer P
-WHERE NOT EXISTS ​
- 	(SELECT A.idservice FROM Services A 
- MINUS ​
-	SELECT V.idservice  FROM Proposer V WHERE V.idBungalow =  P.idBungalow)​)
+		SELECT Distinct P.idBungalow
+		from Proposer P
+		WHERE NOT EXISTS ​
+			 	(SELECT idservice FROM Services 
+			 MINUS ​
+				SELECT P.idservice  FROM Proposer P WHERE P.idBungalow =  B.idBungalow)​)
+*/
+select nomBungalow
+from Bungalows B
+where not EXISTS (select se.idService from Services se
+					minus
+				  select S.idservice from services S
+					join proposer p on s.idservice=p.idservice
+					where p.idbungalow=B.idbungalow)
+
+select nomBungalow
+from Bungalows B
+where not EXISTS (select se.idService from Services se
+					minus
+				  select p.idservice 
+				  from proposer p 
+				  where p.idbungalow=B.idbungalow)
+
 
 R71
 
-select nomBungalow 
-from Bungalows B
-where B.nomBungalow=(select)
 
 
 
-SELECT nomBungalow FROM Bungalows B
-JOIN Proposer P ON B.idBungalow=P.idBungalow
-GROUP BY nomBungalow
+SELECT nomBungalow 
+FROM Bungalows B
+	join proposer p on b.idBungalow=p.idBungalow
+	join services s on p.idservice=s.idservice
+where categorieService='Luxe'
+GROUP BY b.idBungalow, nomBungalow
 HAVING COUNT(*) = (SELECT COUNT(*) FROM Services where categorieService='Luxe') ;
+
+
+select nomBungalow
+from Bungalows B
+where not exists (		select idservice 
+						from services
+						where categorieService='Luxe'
+					minus
+						select p.idservice
+						from proposer p
+						where  p.idbungalow=B.idbungalow )
+
+R72
+
+select nomBungalow
+from Bungalows B 
+where not exists (select S.idservice 
+					from services S 
+					join proposer p on S.idservice=p.idService
+					join Bungalows Bi on p.idBungalow=Bi.idBungalow
+					where nomBungalow='La Poubelle'
+
+					minus 
+
+				select p.idservice 
+					from proposer p
+					where p.idbungalow=b.idbungalow
+					)
