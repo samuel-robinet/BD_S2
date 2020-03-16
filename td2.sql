@@ -436,3 +436,38 @@ where not exists (select S.idservice
 					from proposer p
 					where p.idbungalow=b.idbungalow
 					)
+
+R73
+select nomClient 
+from Clients c
+where not exists (select villeCamping
+					from Campings
+				minus
+				  select villeCamping
+				  from Campings C
+				  join Bungalows B on C.idCamping=B.idCamping
+				  join Locations L on B.idBungalow=L.idBungalow
+				  where c.idClient=L.idClient)
+
+R74
+
+select nomClient
+from Clients C
+where not exists (select Bu.idBungalow
+					from Bungalows Bu
+					 join Locations L on Bu.idBungalow=L.idBungalow
+					 join Clients Cl on Cl.idClient=L.idClient
+					  where nomClient='Zeblouse'
+				minus
+
+				 select B.idBungalow
+				 from Bungalows B
+ 					 join Locations L on B.idBungalow=L.idBungalow
+					 join Clients Cl on Cl.idClient=L.idClient
+				 		where c.idClient=Cl.idClient )
+
+R75
+select nomClient, prenomClient
+from Clients C 
+where not exists ()
+
